@@ -1,9 +1,9 @@
 {
   "expo": {
-     "scheme": "blooddonation",
-  "experiments": {
-    "typedRoutes": true
-  },
+    "scheme": "blooddonation",
+    "experiments": {
+      "typedRoutes": true
+    },
     "name": "frontend",
     "slug": "frontend",
     "version": "1.0.0",
@@ -24,7 +24,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.savemedha.saveblood"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -32,6 +33,12 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1d2af332-3527-4307-8ea1-0f378498b782"
+      }
+    }
   }
 }
