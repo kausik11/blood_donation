@@ -4,7 +4,7 @@ const heroReference = require("../../assets/blood-request.jpg");
 
 export default function HomeHero() {
   return (
-    <View className="px-5 pt-4">
+    <View className="px-5 pt-10">
       <View className="items-center">
         <Text className="text-center text-[28px] font-semibold leading-9 text-zinc-950">
           Request{" "}
