@@ -1,5 +1,4 @@
-import { ImageBackground, Text, View } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Image, Text, View } from "react-native";
 
 const heroReference = require("../../assets/blood-request.jpg");
 
@@ -20,30 +19,16 @@ export default function HomeHero() {
         </Text>
       </View>
 
-      <View className="mt-6 overflow-hidden rounded-lg border border-zinc-200 bg-white">
-        <ImageBackground
-          blurRadius={12}
-          imageStyle={{ opacity: 0.32 }}
-          resizeMode="cover"
-          source={heroReference}
-          style={{ minHeight: 240 }}
-        >
-          <View className="flex-1 justify-between bg-white/70 px-5 py-5">
-            <View className="w-20 rounded-lg bg-rose-600 px-4 py-3" />
+      <View className="relative mt-6 min-h-[240px]">
+        <View className="absolute left-0 top-5 z-10 h-9 w-20 rounded-lg bg-rose-600" />
 
-            <View className="self-end rounded-lg bg-white px-4 py-3">
-              <Feather color="#e11d48" name="heart" size={20} />
-            </View>
-
-            <View className="max-w-[250px] rounded-lg bg-white/90 px-4 py-4">
-              <Text className="text-base font-semibold text-zinc-900">Live donor matching</Text>
-              <Text className="mt-2 text-sm leading-6 text-zinc-600">
-                Choose the blood group, district, and town to activate the nearest matches from
-                the donor registry.
-              </Text>
-            </View>
-          </View>
-        </ImageBackground>
+        <View className="ml-8 overflow-hidden rounded-[22px] border border-zinc-200 bg-white">
+          <Image
+            resizeMode="cover"
+            source={heroReference}
+            style={{ height: 240, width: "100%" }}
+          />
+        </View>
       </View>
     </View>
   );
