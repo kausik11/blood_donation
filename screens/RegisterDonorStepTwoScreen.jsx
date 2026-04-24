@@ -1,6 +1,7 @@
 import { Picker } from "@react-native-picker/picker";
 import * as DocumentPicker from "expo-document-picker";
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useMemo, useState } from "react";
 import {
@@ -392,8 +393,13 @@ export default function RegisterDonorStepTwoScreen() {
     saveDonorRegistrationStepTwo,
     updateDonorRegistrationField,
   } = useRequestSearch();
+  const router = useRouter();
   const [formNotice, setFormNotice] = useState("");
   const dayOptions = useMemo(buildDayOptions, []);
+
+  const handleBack = () => {
+    router.back();
+  };
   const monthOptions = useMemo(buildMonthOptions, []);
   const yearOptions = useMemo(buildYearOptions, []);
 
@@ -475,7 +481,7 @@ export default function RegisterDonorStepTwoScreen() {
     }
 
     saveDonorRegistrationStepTwo();
-    setFormNotice("Step 2 saved locally. Backend submission can be connected next.");
+    router.replace("/donate-blood");
   };
 
   return (
@@ -493,7 +499,30 @@ export default function RegisterDonorStepTwoScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <BrandBanner />
+          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+            <Pressable 
+              onPress={handleBack}
+              style={{
+                width: 48,
+                height: 48,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 999,
+                backgroundColor: "#d50000",
+                marginRight: 12,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 4,
+                elevation: 3,
+              }}
+            >
+              <Ionicons name="arrow-back" size={24} color="white" />
+            </Pressable>
+            <View style={{ flex: 1 }}>
+              <BrandBanner />
+            </View>
+          </View>
 
           <View style={{ marginTop: 22, paddingHorizontal: 10 }}>
             <Text

@@ -316,8 +316,14 @@ export default function RegisterDonorScreen() {
     requestDonorCurrentLocation,
     saveDonorRegistrationStepOne,
     updateDonorRegistrationField,
+    showSplash,
   } = useRequestSearch();
   const [formNotice, setFormNotice] = useState("");
+
+  const handleBack = () => {
+    showSplash();
+    router.replace("/");
+  };
 
   const hasRequiredFields = [
     donorRegistrationDraft.country,
@@ -355,7 +361,30 @@ export default function RegisterDonorScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <BrandBanner />
+          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}>
+            <Pressable 
+              onPress={handleBack}
+              style={{
+                width: 48,
+                height: 48,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 999,
+                backgroundColor: "#d50000",
+                marginRight: 12,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 4,
+                elevation: 3,
+              }}
+            >
+              <Ionicons name="arrow-back" size={24} color="white" />
+            </Pressable>
+            <View style={{ flex: 1 }}>
+              <BrandBanner />
+            </View>
+          </View>
 
           <View style={{ marginTop: 18 }}>
             <Text
