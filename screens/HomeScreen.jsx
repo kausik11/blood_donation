@@ -17,9 +17,10 @@ export default function HomeScreen() {
     return <AnimatedSplashScreen onContinue={dismissSplash} />;
   }
 
-  if (!isAuthenticated) {
-    return <Redirect href="/login" />;
-  }
+  // if (!isAuthenticated) {
+  //   return <Redirect href="/login" />;
+  // }
+
 
   return (
     <AppShell>

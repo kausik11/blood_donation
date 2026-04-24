@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import AppShell from "../components/layout/AppShell";
 
 const logoImage = require("../assets/blood-drop-logo.png");
@@ -51,6 +52,7 @@ const NEAREST_CAMPS = [
 ];
 
 export default function DonateBloodScreen() {
+  const router = useRouter();
   const [expandedRequests, setExpandedRequests] = useState(false);
 
   const visibleRequests = expandedRequests ? ACTIVE_REQUESTS : ACTIVE_REQUESTS.slice(0, 3);
@@ -87,7 +89,10 @@ export default function DonateBloodScreen() {
 
       {/* Search Button */}
       <View className="items-center mt-8">
-        <TouchableOpacity className="flex-row items-center bg-white border border-gray-200 rounded-full px-6 py-3.5 shadow-sm shadow-gray-200 w-56 justify-center">
+        <TouchableOpacity 
+          onPress={() => router.replace("/")}
+          className="flex-row items-center bg-white border border-gray-200 rounded-full px-6 py-3.5 shadow-sm shadow-gray-200 w-56 justify-center"
+        >
           <Feather name="search" size={18} color="#374151" />
           <Text className="ml-2 text-[15px] font-semibold text-gray-800">Search Blood</Text>
         </TouchableOpacity>

@@ -10,7 +10,7 @@ const middleIcon = require("../../assets/vector-plus.png");
 
 const NAV_ITEMS = [
   {
-    href: "/",
+    href: "/donate-blood",
     label: "Home",
     iconType: "home",
   },
@@ -84,9 +84,8 @@ function NavTab({ item, pathname, router }) {
         <NavIcon isActive={isActive} item={item} />
       </View>
       <Text
-        className={`mt-1 text-[12px] font-medium ${
-          isActive ? "text-rose-600" : "text-zinc-600"
-        }`}
+        className={`mt-1 text-[12px] font-medium ${isActive ? "text-rose-600" : "text-zinc-600"
+          }`}
       >
         {item.label}
       </Text>

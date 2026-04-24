@@ -31,15 +31,15 @@ export default function LoginScreen() {
   };
 
   const handleVerifyOTP = () => {
-    // Navigate to home or another page
+    // Navigate to donate blood page
     login();
-    router.replace("/");
+    router.replace("/donate-blood");
   };
 
   const handleGoogleLogin = () => {
-    // Navigate to home
+    // Navigate to donate blood page
     login();
-    router.replace("/");
+    router.replace("/donate-blood");
   };
 
   return (
