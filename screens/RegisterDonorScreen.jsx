@@ -1,4 +1,5 @@
 import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
@@ -309,6 +310,7 @@ function AccuracyCard() {
 }
 
 export default function RegisterDonorScreen() {
+  const router = useRouter();
   const {
     donorRegistrationDraft,
     requestDonorCurrentLocation,
@@ -337,7 +339,8 @@ export default function RegisterDonorScreen() {
     }
 
     saveDonorRegistrationStepOne();
-    setFormNotice("Step 1 saved locally. Backend connection and step 2 can be wired next.");
+    setFormNotice("");
+    router.push("/register-donor-step-2");
   };
 
   return (

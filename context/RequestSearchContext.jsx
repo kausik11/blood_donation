@@ -19,9 +19,19 @@ const DEFAULT_DONOR_REGISTRATION_DRAFT = {
   district: "",
   subdivision: "",
   blockPostalCode: "",
+  fullName: "",
+  gender: "",
+  email: "",
+  phoneNumber: "",
+  birthDay: "",
+  birthMonth: "",
+  birthYear: "",
+  bloodGroup: "",
+  idProof: null,
   useCurrentLocation: false,
   quickLocateRequestedAt: null,
   stepOneSavedAt: null,
+  stepTwoSavedAt: null,
   updatedAt: null,
 };
 
@@ -188,6 +198,16 @@ export function RequestSearchProvider({ children }) {
     }));
   }, []);
 
+  const saveDonorRegistrationStepTwo = useCallback(() => {
+    const timestamp = new Date().toISOString();
+
+    setDonorRegistrationDraft((currentDraft) => ({
+      ...currentDraft,
+      stepTwoSavedAt: timestamp,
+      updatedAt: timestamp,
+    }));
+  }, []);
+
   const resetDonorRegistrationDraft = useCallback(() => {
     setDonorRegistrationDraft(DEFAULT_DONOR_REGISTRATION_DRAFT);
   }, []);
@@ -212,6 +232,7 @@ export function RequestSearchProvider({ children }) {
       updateDonorRegistrationField,
       requestDonorCurrentLocation,
       saveDonorRegistrationStepOne,
+      saveDonorRegistrationStepTwo,
       resetDonorRegistrationDraft,
       bloodGroups,
       districtOptions,
@@ -245,6 +266,7 @@ export function RequestSearchProvider({ children }) {
       requestDonorCurrentLocation,
       resetDonorRegistrationDraft,
       saveDonorRegistrationStepOne,
+      saveDonorRegistrationStepTwo,
       decrementUnits,
       hasRequiredFilters,
       incrementUnits,
