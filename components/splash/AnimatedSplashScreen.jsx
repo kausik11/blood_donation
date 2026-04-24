@@ -628,14 +628,18 @@ export default function AnimatedSplashScreen({ onContinue }) {
 
               <Pressable
                 accessibilityRole="button"
-                accessibilityState={{ disabled: true }}
-                disabled
+                onPress={() => {
+                  onContinue(); // If we need to dismiss splash state
+                  router.push("/login");
+                }}
                 style={{
                   width: buttonWidth,
                   minHeight: 50,
                   marginTop: 18,
                   borderRadius: 999,
-                  backgroundColor: "#d9d9dc",
+                  backgroundColor: "rgba(255, 255, 255, 0.9)",
+                  borderWidth: 1,
+                  borderColor: "#d50000",
                   alignItems: "center",
                   justifyContent: "center",
                   paddingHorizontal: 24,
@@ -644,8 +648,8 @@ export default function AnimatedSplashScreen({ onContinue }) {
                 <Text
                   style={{
                     fontSize: 17,
-                    fontWeight: "500",
-                    color: "#747474",
+                    fontWeight: "600",
+                    color: "#d50000",
                     letterSpacing: 0.2,
                   }}
                 >

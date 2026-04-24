@@ -37,6 +37,7 @@ const DEFAULT_DONOR_REGISTRATION_DRAFT = {
 
 export function RequestSearchProvider({ children }) {
   const [hasSeenSplash, setHasSeenSplash] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedBloodGroup, setSelectedBloodGroup] = useState("");
   const [unitsNeeded, setUnitsNeeded] = useState(DEFAULT_UNITS_NEEDED);
   const [selectedDistrictKey, setSelectedDistrictKeyState] = useState("");
@@ -169,6 +170,19 @@ export function RequestSearchProvider({ children }) {
     setHasSeenSplash(true);
   }, []);
 
+  const showSplash = useCallback(() => {
+    setHasSeenSplash(false);
+  }, []);
+
+  const login = useCallback(() => {
+    setIsAuthenticated(true);
+    setHasSeenSplash(true); // they bypass splash once logged in
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsAuthenticated(false);
+  }, []);
+
   const updateDonorRegistrationField = useCallback((field, value) => {
     setDonorRegistrationDraft((currentDraft) => ({
       ...currentDraft,
@@ -226,8 +240,12 @@ export function RequestSearchProvider({ children }) {
 
   const value = useMemo(
     () => ({
+      isAuthenticated,
+      login,
+      logout,
       hasSeenSplash,
       dismissSplash,
+      showSplash,
       donorRegistrationDraft,
       updateDonorRegistrationField,
       requestDonorCurrentLocation,
@@ -260,8 +278,12 @@ export function RequestSearchProvider({ children }) {
     }),
     [
       buildNotifyMessageForDonor,
+      login,
+      logout,
+      isAuthenticated,
       donorRegistrationDraft,
       dismissSplash,
+      showSplash,
       hasSeenSplash,
       requestDonorCurrentLocation,
       resetDonorRegistrationDraft,

@@ -1,4 +1,5 @@
 import { View } from "react-native";
+import { Redirect } from "expo-router";
 import BloodGroupSection from "../components/home/BloodGroupSection";
 import DonorListSection from "../components/home/DonorListSection";
 import HomeHero from "../components/home/HomeHero";
@@ -10,10 +11,14 @@ import AnimatedSplashScreen from "../components/splash/AnimatedSplashScreen";
 import { useRequestSearch } from "../context/RequestSearchContext";
 
 export default function HomeScreen() {
-  const { dismissSplash, hasSeenSplash } = useRequestSearch();
+  const { dismissSplash, hasSeenSplash, isAuthenticated } = useRequestSearch();
 
   if (!hasSeenSplash) {
     return <AnimatedSplashScreen onContinue={dismissSplash} />;
+  }
+
+  if (!isAuthenticated) {
+    return <Redirect href="/login" />;
   }
 
   return (
