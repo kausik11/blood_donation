@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "expo-router";
 import {
   Animated,
   Easing,
@@ -46,20 +47,15 @@ function LoadingDot({ index, progress }) {
 }
 
 export default function AnimatedSplashScreen({ onContinue }) {
+  const router = useRouter();
   const { width, height } = useWindowDimensions();
+  const [screenStep, setScreenStep] = useState("intro");
   const entrance = useRef(new Animated.Value(0)).current;
   const halo = useRef(new Animated.Value(0)).current;
   const dotProgress = useRef(new Animated.Value(0)).current;
   const buttonScale = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    const entranceAnimation = Animated.timing(entrance, {
-      toValue: 1,
-      duration: 900,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
-    });
-
     const haloLoop = Animated.loop(
       Animated.sequence([
         Animated.timing(halo, {
@@ -86,7 +82,6 @@ export default function AnimatedSplashScreen({ onContinue }) {
       }),
     );
 
-    entranceAnimation.start();
     haloLoop.start();
     dotLoop.start();
 
@@ -94,11 +89,26 @@ export default function AnimatedSplashScreen({ onContinue }) {
       haloLoop.stop();
       dotLoop.stop();
     };
-  }, [dotProgress, entrance, halo]);
+  }, [dotProgress, halo]);
+
+  useEffect(() => {
+    buttonScale.setValue(1);
+    entrance.setValue(0);
+
+    const entranceAnimation = Animated.timing(entrance, {
+      toValue: 1,
+      duration: 900,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    });
+
+    entranceAnimation.start();
+  }, [buttonScale, entrance, screenStep]);
 
   const compact = height < 760;
   const contentWidth = Math.min(width - 40, 320);
   const buttonWidth = Math.min(width - 86, 276);
+  const bannerWidth = Math.min(width - 32, 382);
   const heroBoxSize = compact ? 194 : 214;
   const outerFrameSize = compact ? 166 : 186;
   const middleFrameSize = compact ? 148 : 166;
@@ -107,6 +117,9 @@ export default function AnimatedSplashScreen({ onContinue }) {
   const logoSize = compact ? 58 : 64;
   const titleSize = compact ? 30 : 34;
   const serviceSize = compact ? 17 : 18;
+  const promptBoxWidth = Math.min(width - 72, 286);
+  const promptBoxHeight = compact ? 360 : 430;
+  const watermarkWidth = Math.min(width - 110, 300);
 
   const heroOpacity = entrance.interpolate({
     inputRange: [0, 1],
@@ -148,6 +161,16 @@ export default function AnimatedSplashScreen({ onContinue }) {
     outputRange: [0.22, 0.36],
   });
 
+  const watermarkTranslateY = halo.interpolate({
+    inputRange: [0, 1],
+    outputRange: [6, -8],
+  });
+
+  const watermarkScale = halo.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.03],
+  });
+
   const handlePressIn = () => {
     Animated.spring(buttonScale, {
       toValue: 0.97,
@@ -166,8 +189,189 @@ export default function AnimatedSplashScreen({ onContinue }) {
     }).start();
   };
 
+  const handleRegisterPress = () => {
+    setScreenStep("registerPrompt");
+  };
+
+  const handleNextPress = () => {
+    onContinue?.();
+    router.push("/register-donor");
+  };
+
+  const animatedEntranceStyle = {
+    opacity: heroOpacity,
+    transform: [{ translateY: heroTranslateY }, { scale: heroScale }],
+  };
+
+  if (screenStep === "registerPrompt") {
+    return (
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#ffffff" }}
+        edges={["top", "right", "bottom", "left"]}
+      >
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#ffffff",
+            paddingHorizontal: 16,
+            paddingTop: compact ? 10 : 16,
+            paddingBottom: compact ? 20 : 28,
+          }}
+        >
+          <Animated.View style={animatedEntranceStyle}>
+            <View
+              style={{
+                width: bannerWidth,
+                alignSelf: "center",
+                borderRadius: 20,
+                backgroundColor: "#fdf0f0",
+                paddingHorizontal: 18,
+                paddingVertical: 14,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  source={logoImage}
+                  resizeMode="contain"
+                  style={{ width: 36, height: 48 }}
+                />
+
+                <View style={{ marginLeft: 10 }}>
+                  <Text
+                    style={{
+                      fontSize: 23,
+                      lineHeight: 28,
+                      fontWeight: "600",
+                      color: "#0f0f0f",
+                      letterSpacing: -0.3,
+                    }}
+                  >
+                    My <Text style={{ color: "#d50000" }}>Blood</Text>
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: -2,
+                      textAlign: "center",
+                      fontSize: 10,
+                      fontWeight: "600",
+                      letterSpacing: 4.8,
+                      color: "#2b2b2b",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Bank
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </Animated.View>
+
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Animated.View
+              style={[
+                animatedEntranceStyle,
+                {
+                  width: promptBoxWidth,
+                  height: promptBoxHeight,
+                  alignItems: "center",
+                  justifyContent: "center",
+                },
+              ]}
+            >
+              <Animated.Image
+                source={logoImage}
+                resizeMode="contain"
+                style={{
+                  position: "absolute",
+                  width: watermarkWidth,
+                  height: watermarkWidth * 1.72,
+                  opacity: 0.1,
+                  transform: [{ translateY: watermarkTranslateY }, { scale: watermarkScale }],
+                }}
+              />
+
+              <View
+                style={{
+                  width: "100%",
+                  alignItems: "center",
+                  paddingHorizontal: 6,
+                }}
+              >
+                <View
+                  style={{
+                    paddingHorizontal: 12,
+                    paddingVertical: 16,
+                    borderRadius: 22,
+                    backgroundColor: "rgba(255, 255, 255, 0.86)",
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: compact ? 22 : 24,
+                      lineHeight: compact ? 32 : 34,
+                      fontWeight: "700",
+                      color: "#131313",
+                      letterSpacing: -0.5,
+                    }}
+                  >
+                    You need to register{"\n"}yourself first to{"\n"}become a{" "}
+                    <Text style={{ color: "#d50000" }}>donor</Text>
+                  </Text>
+                </View>
+
+                <AnimatedPressable
+                  accessibilityRole="button"
+                  onPress={handleNextPress}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                  style={{
+                    width: 168,
+                    minHeight: 54,
+                    marginTop: 30,
+                    borderRadius: 999,
+                    backgroundColor: "#d50000",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingHorizontal: 24,
+                    shadowColor: "#d50000",
+                    shadowOffset: { width: 0, height: 10 },
+                    shadowOpacity: 0.24,
+                    shadowRadius: 16,
+                    elevation: 7,
+                    transform: [{ scale: buttonScale }],
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "600",
+                      color: "#ffffff",
+                      letterSpacing: 0.2,
+                    }}
+                  >
+                    Next
+                  </Text>
+                </AnimatedPressable>
+              </View>
+            </Animated.View>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fffafa" }} edges={["top", "right", "bottom", "left"]}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "#fffafa" }}
+      edges={["top", "right", "bottom", "left"]}
+    >
       <ImageBackground
         blurRadius={18}
         imageStyle={{
@@ -225,8 +429,7 @@ export default function AnimatedSplashScreen({ onContinue }) {
                 style={{
                   alignItems: "center",
                   width: contentWidth,
-                  opacity: heroOpacity,
-                  transform: [{ translateY: heroTranslateY }, { scale: heroScale }],
+                  ...animatedEntranceStyle,
                 }}
               >
                 <View
@@ -392,7 +595,7 @@ export default function AnimatedSplashScreen({ onContinue }) {
 
               <AnimatedPressable
                 accessibilityRole="button"
-                onPress={onContinue}
+                onPress={handleRegisterPress}
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
                 style={{
